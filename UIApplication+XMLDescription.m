@@ -12,7 +12,7 @@
 @implementation UIApplication (XMLDescription)
 
 - (NSString *) xmlDescription {
-	NSMutableString *resultingXML = [NSMutableString stringWithFormat:@"\n<%@>", [self className]];
+	NSMutableString *resultingXML = [NSMutableString stringWithFormat:@"\n<%s>", NAMEOF(self)];
 	[resultingXML appendFormat:@"\n\t<address>%d</address>", (NSInteger)self];
 	
 
@@ -26,7 +26,7 @@
 	else {
 		[resultingXML appendString:@"\n\t<windows />"];
 	}
-	[resultingXML appendFormat:@"\n</%@>", [self className]];
+	[resultingXML appendFormat:@"\n</%s>", NAMEOF(self)];
 	return resultingXML;
 }
 

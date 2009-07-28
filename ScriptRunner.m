@@ -12,6 +12,7 @@
 #import "XMLDescription.h"
 #import "XPathQuery.h"
 #import "TouchSynthesis.h"
+#import "Foundation/Foundation.h"
 
 const float SCRIPT_RUNNER_INTER_COMMAND_DELAY = 0.0;
 const float MAX_WAIT_ATTEMPTS = 60;
@@ -235,7 +236,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	
 	BOOL foundElements = NO;
 	if(requiredCount) {
-		foundElements = [views count] == [requiredCount integerValue];
+		foundElements = [views count] == (unsigned int) [requiredCount integerValue];
 	}
 	else {
 		foundElements = [views count] != 0;
@@ -295,16 +296,16 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 		exit(1);
 	}
 	
-	printf("=== checkMatchCount\n    viewXPath:\n        %s\n    matchCount: %ld\n",
+	printf("=== checkMatchCount\n    viewXPath:\n        %s\n    matchCount: %d\n",
 		   [viewXPath cStringUsingEncoding:NSUTF8StringEncoding],
 		   [matchCount integerValue]);
 	
 	NSArray *views = [self viewsForXPath:viewXPath];
-	if ([views count] != [matchCount integerValue])
+	if ([views count] != (unsigned int) [matchCount integerValue])
 	{
 		fprintf(
 				stderr,
-				"### 'checkMatchCount' wanted a matching count of %ld but encountered %ld\n",
+				"### 'checkMatchCount' wanted a matching count of %d but encountered %d\n",
 				[matchCount integerValue],
 				[views count]);
 		exit(1);
@@ -337,7 +338,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	{
 		fprintf(
 				stderr,
-				"### 'viewXPath' for command 'simulateTouch' selected %ld nodes, where exactly 1 is required.\n",
+				"### 'viewXPath' for command 'simulateTouch' selected %d nodes, where exactly 1 is required.\n",
 				[views count]);
 		exit(1);
 	}
@@ -416,7 +417,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	 indexPathForRow:[rowIndex integerValue]
 	 inSection:[sectionIndex integerValue]];
 	
-	printf("=== scrollToRow\n    viewXPath:\n        %s\n    indexPath: (section: %ld, row: %ld)\n",
+	printf("=== scrollToRow\n    viewXPath:\n        %s\n    indexPath: (section: %d, row: %d)\n",
 		   [viewXPath cStringUsingEncoding:NSUTF8StringEncoding],
 		   [indexPath section],
 		   [indexPath row]);
@@ -426,7 +427,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	{
 		fprintf(
 				stderr,
-				"### 'viewXPath' for command 'scrollToRow' selected %ld nodes, where exactly 1 is required.\n",
+				"### 'viewXPath' for command 'scrollToRow' selected %d nodes, where exactly 1 is required.\n",
 				[views count]);
 		exit(1);
 	}
@@ -434,8 +435,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	{
 		fprintf(
 				stderr,
-				"### 'viewXPath' for command 'scrollToRow' selected a node but it wasn't a UITableView as required.\n",
-				[views count]);
+				"### 'viewXPath' for command 'scrollToRow' selected a node but it wasn't a UITableView as required.\n");
 		exit(1);
 	}
 	
@@ -481,7 +481,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	{
 		fprintf(
 				stderr,
-				"### 'viewXPath' for command 'assertText' selected %ld nodes, where exactly 1 is required.\n",
+				"### 'viewXPath' for command 'assertText' selected %d nodes, where exactly 1 is required.\n",
 				[views count]);
 		exit(1);
 	}
@@ -494,8 +494,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 					stderr,
 					"### '%s' found, but '%s' was expected.\n",
 					[actualText cStringUsingEncoding:NSUTF8StringEncoding],
-					[text cStringUsingEncoding:NSUTF8StringEncoding],
-					[views count]);
+					[text cStringUsingEncoding:NSUTF8StringEncoding]);
 			exit(1);
 			
 		}
@@ -504,8 +503,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 		fprintf(
 				stderr,
 				"### %s doesn't suport 'text' method.\n",
-				[viewForText.className cStringUsingEncoding:NSUTF8StringEncoding],
-				[views count]);
+				NAMEOF(viewForText));
 		exit(1);
 	}
 }
@@ -545,8 +543,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 	{
 		fprintf(
 				stderr,
-				"### 'viewXPath' for command 'setText' selected %ld nodes, where exactly 1 is required.\n",
-				[views count]);
+				"### 'viewXPath' for command 'setText' selected %d nodes, where exactly 1 is required.\n", [views count]);
 		exit(1);
 	}
 	
@@ -558,8 +555,7 @@ const float BACKBUTTON_WAIT_DELAY = 0.75;
 		fprintf(
 				stderr,
 				"### %s doesn't suport 'setText' method.\n",
-				[viewForText.className cStringUsingEncoding:NSUTF8StringEncoding],
-				[views count]);
+				NAMEOF(viewForText));
 		exit(1);
 	}
 }
